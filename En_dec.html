@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt & Decrypt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #072932bf;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background:  #bbc4c768;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.479);
+            width: 420px;
+            text-align: center;
+        }
+        h2 {
+            color: #f9f9f9;
+            margin-bottom: 20px;
+        }
+        .head {
+          color: #f2f8f7;
+
+        }
+        textarea, input {
+            width: 90%;
+            padding: 12px;
+            margin: 12px 0;
+            border: 2px solid #eaeff3d2;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            background-color: #eef3f5b2;
+        }
+        .btn {
+            width: 90%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #eaeff3be;;
+            border-radius: 45px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .encrypt-btn {
+            background-color: #e5ecefbc;
+            color:  rgba(2, 16, 14, 0.501);
+        }
+        .decrypt-btn {
+            background-color:   #f4f6f7ac;
+            color: rgba(2, 16, 14, 0.501);
+        }
+        .encrypt-btn:hover {
+            background-color: #d5e7efa5;
+        }
+        .decrypt-btn:hover {
+            background-color: #ccd6dac1;
+        }
+        .output {
+            margin-top: 15px;
+            padding: 12px;
+            background:  #dee2e4a2;
+            border: 2px solid #e1e5e8bd;
+            border-radius: 8px;
+            min-height: 50px;
+            font-size: 16px;
+            text-align: left;
+            color:  rgba(2, 16, 14, 0.501);
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        function showSection(id) {
+            document.getElementById('encryptionSection').classList.add('hidden');
+            document.getElementById('decryptionSection').classList.add('hidden');
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function encrypt(){
+            let text = document.getElementById('encryptText').value;
+            let key = document.getElementById('encryptKey').value;
+            let codedString = '';
+
+            for(var i=0;i<text.length;i++){
+                codedString+=String.fromCharCode(text.charCodeAt(i)^key.charCodeAt(i%key.length));
+            }
+
+            document.getElementById('encryptResult').innerText = 'Encrypted: ' + btoa(codedString);
+        }
+
+        function decrypt(){
+            let text = document.getElementById('decryptText').value;
+            let key = document.getElementById('decryptKey').value;
+            let decodedString = atob(text);
+            let decodedText = '';
+
+            for(var i=0;i<decodedString.length;i++){
+                decodedText+=String.fromCharCode(decodedString.charCodeAt(i)^key.charCodeAt(i%key.length));
+            }
+
+            document.getElementById('decryptResult').innerText = 'Decrypted: ' + decodedText;
+        }
+
+        window.onload = function() {
+            showSection('encryptionSection');
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Encrypt & Decrypt</h2>
+        <button class="btn encrypt-btn" onclick="showSection('encryptionSection')">Encrypt</button>
+        <button class="btn decrypt-btn" onclick="showSection('decryptionSection')">Decrypt</button>
+        
+        <div id="encryptionSection">
+            <h3 class="head">Encryption</h3>
+            <input type="text" id="encryptText" placeholder="Enter text to encrypt">
+            <input type="text" id="encryptKey" placeholder="Enter encryption key">
+            <button class="btn encrypt-btn" onclick="encrypt()">Encrypt</button>
+            <div class="output" id="encryptResult">Encrypted text will appear here...</div>
+        </div>
+        
+        <div id="decryptionSection" class="hidden">
+            <h3 class="head">Decryption</h3>
+            <input type="text" id="decryptText" placeholder="Enter text to decrypt">
+            <input type="text" id="decryptKey" placeholder="Enter decryption key">
+            <button class="btn decrypt-btn" onclick="decrypt()">Decrypt</button>
+            <div class="output" id="decryptResult">Decrypted text will appear here...</div>
+        </div>
+    </div>
+</body>
+</html>
